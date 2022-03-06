@@ -1,0 +1,19 @@
+
+ejercicios SQL
+
+--  Tem alguns Clientes que são dependentes. Quero que vocês me digam de que clientes eles são dependentes.
+    ○ Por exemplo “Filho A” é dependente de qual outro cliente?
+
+-- Quais foram as 5 contas que:
+
+-- ○ Mais fizeram transações
+
+-- ○ Menos fizeram transações
+
+-- Tivemos uma perda de dados e não sabemos qual é o saldo de cada conta, mas temos todas as transações efetuadas.
+
+-- ○ Queremos saber qual saldo total das contas registradas em banco!
+
+-- ■ Reparem que temos alguns tipos de transações que subtraem dinheiro e outros que somam.
+
+​
