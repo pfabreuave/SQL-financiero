@@ -82,4 +82,20 @@ join cliente c on rep.id_cliente = c.id
 where dep.dependente = true
 order by rep.id_conta, GERARQUIA desc;
 
+---******************CREA VIEW*****************************---
 
+create view view_dependente as
+ select distinct  id_conta from cliente_conta
+ where cliente_conta.dependente = true;
+
+ ---******************LISTA VIEW*****************************---
+
+ select cliente_conta.id_conta,
+        cliente.nome,
+        cliente.id,
+ 		CASE WHEN cliente_conta.dependente = false THEN 'REPRESENTANTE' else '' END AS GERARQUIA   
+ from cliente_conta
+ join view_dependente on (cliente_conta.id_conta = view_dependente.id_conta)
+ join cliente on (cliente.id = cliente_conta.id_cliente)
+ ORDER BY cliente_conta.id_conta, cliente_conta.dependente;
+ 
