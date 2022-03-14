@@ -1,6 +1,6 @@
----******************lista los saldos en contas******************--
+---******************lista los saldos en contas con nombres******************---
 		
-select conta.numero as "NUMERO CONTA", cliente.nome,
+select conta.numero as "NUMERO CONTA", cliente.nome as NOME,
                  conta.saldo as "SALDO CONTA"
         
 FROM conta

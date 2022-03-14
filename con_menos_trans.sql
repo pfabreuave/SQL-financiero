@@ -2,14 +2,14 @@
 
 
 select
-transacao.id_cliente_conta,
+transacao.id_cliente_conta, cliente.nome,
     	COUNT(*) AS Quantidade
         
 FROM transacao
 
- join cliente_conta
-	on (transacao.id_cliente_conta = cliente_conta.id_conta)
+join cliente 
+	on (transacao.id_cliente_conta = cliente.id)
         
-    GROUP BY cliente_conta.id_conta 
+    GROUP BY transacao.id_cliente_conta
     ORDER BY Quantidade ASC
     LIMIT 5; 

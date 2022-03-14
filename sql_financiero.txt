@@ -1,41 +1,47 @@
+---******************los 5 cuentas con mas transacciones******************---
 
-					5 de 5 sql a resolver
 
-
+select
+transacao.id_cliente_conta, cliente.nome,
+    	COUNT(*) AS Quantidade
+        
+FROM transacao
+	
+join cliente 
+	on (transacao.id_cliente_conta = cliente.id)
+        
+    GROUP BY transacao.id_cliente_conta 
+    ORDER BY Quantidade desc
+    LIMIT 5; 
 
 ---******************los 5 cuentas con menos transacciones******************---
 
 
 select
-transacao.id_cliente_conta,
+transacao.id_cliente_conta, cliente.nome,
     	COUNT(*) AS Quantidade
         
 FROM transacao
 
- join cliente_conta
-	on (transacao.id_cliente_conta = cliente_conta.id_conta)
+join cliente 
+	on (transacao.id_cliente_conta = cliente.id)
         
-    GROUP BY cliente_conta.id_conta 
+    GROUP BY transacao.id_cliente_conta
     ORDER BY Quantidade ASC
-    LIMIT 5; 
+    LIMIT 5;  
 
+---******************DEPENDIENTES*****************************---
 
----******************los 5 cuentas con mas transacciones******************---
-
-
-select
-transacao.id_cliente_conta,
-    	COUNT(*) AS Quantidade
-        
-FROM transacao
-
- join cliente_conta
-	on (transacao.id_cliente_conta = cliente_conta.id_conta)
-        
-    GROUP BY cliente_conta.id_conta 
-    ORDER BY Quantidade desc
-    LIMIT 5; 
-
+select distinct 
+	   c.nome, 
+	   rep.id_conta,
+       CASE WHEN rep.dependente = false 
+       THEN 'REPRESENTANTE' else '' END AS GERARQUIA
+from cliente_conta as dep 
+JOIN cliente_conta as rep on dep.id_conta = rep.id_conta
+join cliente c on rep.id_cliente = c.id
+where dep.dependente = true
+order by rep.id_conta, GERARQUIA desc;
 
 ---******************Recuperação de saldos en contas******************---
 
@@ -61,41 +67,11 @@ GROUP BY
         conta.saldo) AS calculo_novo_saldo
         WHERE calculo_novo_saldo.id = conta.id;
 
----******************lista los saldos en contas******************--
+---******************lista los saldos en contas con nombres******************---
 		
-select conta.numero as "NUMERO CONTA", 
+select conta.numero as "NUMERO CONTA", cliente.nome as NOME,
                  conta.saldo as "SALDO CONTA"
         
 FROM conta
+join cliente on conta.id = cliente.id
 ORDER BY numero;
-
----******************DEPENDIENTES*****************************---
-
-select distinct 
-	   c.nome, 
-	   rep.id_conta,
-       CASE WHEN rep.dependente = false 
-       THEN 'REPRESENTANTE' else '' END AS GERARQUIA
-from cliente_conta as dep 
-JOIN cliente_conta as rep on dep.id_conta = rep.id_conta
-join cliente c on rep.id_cliente = c.id
-where dep.dependente = true
-order by rep.id_conta, GERARQUIA desc;
-
----******************CREA VIEW*****************************---
-
-create view view_dependente as
- select distinct  id_conta from cliente_conta
- where cliente_conta.dependente = true;
-
- ---******************LISTA VIEW*****************************---
-
- select cliente_conta.id_conta,
-        cliente.nome,
-        cliente.id,
- 		CASE WHEN cliente_conta.dependente = false THEN 'REPRESENTANTE' else '' END AS GERARQUIA   
- from cliente_conta
- join view_dependente on (cliente_conta.id_conta = view_dependente.id_conta)
- join cliente on (cliente.id = cliente_conta.id_cliente)
- ORDER BY cliente_conta.id_conta, cliente_conta.dependente;
- 
